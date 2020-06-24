@@ -13,7 +13,7 @@ using Vendr.Core.Web.PaymentProviders;
 
 namespace Vendr.PaymentProviders.Stripe
 {
-    [PaymentProvider("stripe-checkout", "Stripe Checkout", "Stripe Checkout payment provider for one time and subscription payments")]
+	[PaymentProvider("stripe-checkout", "Stripe Checkout", "Stripe Checkout payment provider for one time and subscription payments")]
     public class StripeCheckoutPaymentProvider : StripePaymentProviderBase<StripeCheckoutSettings>
     {
         public StripeCheckoutPaymentProvider(VendrContext vendr)
@@ -326,6 +326,8 @@ namespace Vendr.PaymentProviders.Stripe
                 {
                     if (stripeEvent.Data?.Object?.Instance is Session stripeSession)
                     {
+                        Vendr.Session.SetCurrentOrder(order.StoreId, order);
+
                         if (stripeSession.Mode == "payment")
                         {
                             var paymentIntentService = new PaymentIntentService();
